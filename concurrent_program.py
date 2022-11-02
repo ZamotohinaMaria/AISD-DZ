@@ -26,9 +26,8 @@ def main():
         average += int(sys.argv[i])
     average /= 3
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        result_dispersion += int(executor.map(quadro, [(average, int(sys.argv[1])), 
-                                                       (average, int(sys.argv[2])), 
-                                                       (average, int(sys.argv[3]))]))
+        result_dispersion += executor.submit(quadro, average, [int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])]).done()
+    
     result_dispersion /= 2
     print(result_dispersion)
 
