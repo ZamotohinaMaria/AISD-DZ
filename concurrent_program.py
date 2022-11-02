@@ -10,7 +10,6 @@ def quadro(average: float, x: float):
     Returns:
         _type_: квадратичное отклонение
     """
-    print((average - x)**2)
     return (average - x)**2
 
 def main():
@@ -21,13 +20,15 @@ def main():
     
     result_dispersion = 0 # результирующая выборочная дисперсия 
     average = 0 # среднее арифметическое введенных чисел. необходимое для расчетов
-    
+    a = [int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])]
     for i in range(1, len(sys.argv)):
         average += int(sys.argv[i])
     average /= 3
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        result_dispersion += executor.submit(quadro, average, [int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])]).done()
-    
+        results = {executor.submit(quadro, average, x): x for x in a}
+        for resurt in concurrent.futures.as_completed(results):
+            result_dispersion += resurt.result()
+    #print(data)
     result_dispersion /= 2
     print(result_dispersion)
 
